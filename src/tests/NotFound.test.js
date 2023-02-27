@@ -11,4 +11,13 @@ describe('Teste o componente <NotFound.js />', () => {
 
     expect(title).toBeInTheDocument();
   });
+
+  test('2.Uma imagem é renderizada na página', () => {
+    renderWithRouter(<NotFound />);
+
+    const url = 'https://media.giphy.com/media/kNSeTs31XBZ3G/giphy.gif';
+    const altText = 'Pikachu crying because the page requested was not found';
+    const image = screen.getByAltText(altText);
+    expect(image.src).toContain(url);
+  });
 });
