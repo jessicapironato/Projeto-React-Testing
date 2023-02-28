@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import renderWithRouter from '../renderWithRouter';
 import App from '../App';
@@ -46,5 +46,20 @@ describe('Teste o componente <PokemonDetails.js />', () => {
     expect(image[2]).toHaveAttribute('src', urlTwo);
     expect(image[1]).toHaveAttribute('alt', 'Pikachu location');
     expect(image[2]).toHaveAttribute('alt', 'Pikachu location');
+  });
+
+  it('3.Teste se o usuário pode favoritar um Pokémon através da página de detalhes', () => {
+    const { history } = renderWithRouter(<App />);
+    const linkMoreDetails = screen.getByText(/More Details/i);
+    userEvent.click(linkMoreDetails);
+
+    act(() => {
+      history.push('/pokemon/4');
+    });
+
+    const pokemonStar = screen.getByLabelText(/Pokémon Favoritado?/i);
+    userEvent.click(pokemonStar);
+    expect(pokemonStar).toBeVisible();
+    expect(screen.getByRole('img', { name: /Charmander is marked as favorite/i })).toBeInTheDocument();
   });
 });
